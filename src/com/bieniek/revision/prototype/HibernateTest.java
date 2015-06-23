@@ -5,6 +5,7 @@ import com.bieniek.revision.model.UserInfo;
 import com.bieniek.revision.service.UserService;
 import com.bieniek.revision.service.serviceimplementation.UserServiceImplementation;
 import com.bieniek.revision.utility.HibernateUtility;
+
 public class HibernateTest 
 {
 	private static UserService service = new UserServiceImplementation();
