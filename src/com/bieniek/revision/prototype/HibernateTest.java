@@ -1,29 +1,22 @@
 package com.bieniek.revision.prototype;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
+import com.bieniek.revision.model.User;
+import com.bieniek.revision.model.UserInfo;
+import com.bieniek.revision.service.UserService;
+import com.bieniek.revision.service.serviceimplementation.UserServiceImplementation;
 import com.bieniek.revision.utility.HibernateUtility;
-
 public class HibernateTest 
 {
+	private static UserService service = new UserServiceImplementation();
+	
 	public static void main(String[] args)
 	{
-		Session  session = HibernateUtility.getSessionFactory().openSession();
-		Transaction transaction = null;
+		User user = service.findUser(new Long(2));
+		UserInfo userInfo = user.getUserInfo();
+		userInfo.setPhoneNumber("111222888");
 		
-		try
-		{
-			transaction = session.beginTransaction();			
-		}
-		catch(Exception ex)
-		{
-			transaction.rollback();
-			ex.printStackTrace();
-		}
-		finally
-		{
-			session.close();
-		}
+		service.updateUser(user);
+		HibernateUtility.getSessionFactory().close();
+		
 	}
 }

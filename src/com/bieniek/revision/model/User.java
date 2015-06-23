@@ -1,7 +1,5 @@
 package com.bieniek.revision.model;
 
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +17,7 @@ public class User
 	private long id;
 	private String name;
 	private String surname;
-	private Set<UserInfo> userInfo;
+	private UserInfo userInfo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,13 +54,13 @@ public class User
 		this.surname = surname;
 	}
 
-	@OneToMany(mappedBy = "user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	public Set<UserInfo> getUserInfo() 
+	@OneToOne(mappedBy = "user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	public UserInfo getUserInfo() 
 	{
 		return userInfo;
 	}
 
-	public void setUserInfo(Set<UserInfo> userInfo)
+	public void setUserInfo(UserInfo userInfo)
 	{
 		this.userInfo = userInfo;
 	}
