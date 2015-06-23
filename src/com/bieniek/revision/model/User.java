@@ -65,5 +65,10 @@ public class User
 		this.userInfo = userInfo;
 	}
 	
+	public String toString()
+	{
+		return name+" "+surname+" "+id+" "+userInfo;
+	}
+	
 	
 }
