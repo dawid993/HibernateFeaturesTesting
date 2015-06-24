@@ -2,14 +2,21 @@ package com.bieniek.revision.service.serviceimplementation;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.bieniek.revision.dao.GenericDAO;
 import com.bieniek.revision.dao.daoimplementation.UserDAOImplementation;
 import com.bieniek.revision.model.User;
 import com.bieniek.revision.model.UserInfo;
 import com.bieniek.revision.service.UserService;
 
+@Service(value="userServiceImplementation")
 public class UserServiceImplementation implements UserService
 {
-	private static UserDAOImplementation userDAO;
+	@Autowired
+	private GenericDAO<User, Long> userDAO;
 	
 	public UserServiceImplementation()
 	{
@@ -17,65 +24,52 @@ public class UserServiceImplementation implements UserService
 	}
 
 	@Override
+	@Transactional
 	public void saveUser(User user)
-	{
-		userDAO.openSessionAndTransaction();
-		userDAO.create(user);
-		userDAO.closeSessionAndTransaction();
+	{	
+		userDAO.create(user);		
 	}
 
 	@Override
+	@Transactional
 	public void addInfoToUser(User user,UserInfo userInfo)
-	{
-		userDAO.openSessionAndTransaction();
-		user.setUserInfo(userInfo);
-		userDAO.update(user);
-		
-	}
-
-	@Override
-	public void deleteUser(User user) 
-	{
-		userDAO.openSessionAndTransaction();
-		userDAO.delete(user);
-		userDAO.closeSessionAndTransaction();
-	}
-
-	@Override
-	public User findUser(Long id)
 	{		
-		userDAO.openSessionAndTransaction();
-		User user = userDAO.read(id);
-		userDAO.closeSessionAndTransaction();
-		
-		return user;
+		user.setUserInfo(userInfo);	
 	}
 
 	@Override
+	@Transactional
+	public void deleteUser(User user) 
+	{		
+		userDAO.delete(user);		
+	}
+
+	@Override
+	@Transactional
+	public User findUser(Long id)
+	{	
+		return userDAO.read(id);	
+	}
+
+	@Override
+	@Transactional
 	public List<User> getAllUsers() 
 	{
-		userDAO.openSessionAndTransaction();
-		List<User> users = userDAO.readAllEntities();
-		userDAO.closeSessionAndTransaction();
-		
-		return users;
+		return userDAO.readAllEntities();
 	}
 
 	@Override
+	@Transactional
 	public void deleteAllUsers() 
 	{
-		userDAO.openSessionAndTransaction();
-		userDAO.deleteAll();
-		userDAO.closeSessionAndTransaction();
+		userDAO.deleteAll();	
 	}
 
 	@Override
+	@Transactional
 	public void updateUser(User user) 
 	{
-		userDAO.openSessionAndTransaction();
-		userDAO.update(user);
-		userDAO.closeSessionAndTransaction();
-		
+		userDAO.update(user);			
 	}
 
 }

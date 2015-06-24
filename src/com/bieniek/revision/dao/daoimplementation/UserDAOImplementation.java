@@ -3,16 +3,18 @@ package com.bieniek.revision.dao.daoimplementation;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.bieniek.revision.dao.GenericDAO;
 import com.bieniek.revision.model.User;
-import com.bieniek.revision.utility.HibernateUtility;
 
+@Service(value="userDaoImplementation")
 public class UserDAOImplementation implements GenericDAO<User,Long>
 {
-	private Session currentSession;
-	private Transaction currentTransaction;		
+	@Autowired
+	private SessionFactory sessionFactory;	
 
 	@Override
 	public void create(User entity) 
@@ -52,30 +54,10 @@ public class UserDAOImplementation implements GenericDAO<User,Long>
 		List<User> users = readAllEntities();
 		for(User user:users)
 			delete(user);
-	}
+	}	
 	
-	public Session getCurrentSession()
-	{		
-		return currentSession;
-	}
-	
-	public Transaction getCurrentTransaction()
+	private Session getCurrentSession()
 	{
-		return currentTransaction;
-	}
-	
-	public void openSessionAndTransaction()
-	{
-		currentSession = HibernateUtility.getSessionFactory().openSession();
-		currentTransaction = currentSession.beginTransaction();
-	}
-	
-	public void closeSessionAndTransaction()
-	{
-		currentTransaction.commit();
-		currentSession.close();
-	}
-	
-	
-
+		return sessionFactory.getCurrentSession();
+	}	
 }

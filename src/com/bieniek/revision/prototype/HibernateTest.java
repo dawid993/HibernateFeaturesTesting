@@ -1,23 +1,23 @@
 package com.bieniek.revision.prototype;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.bieniek.revision.model.User;
 import com.bieniek.revision.model.UserInfo;
 import com.bieniek.revision.service.UserService;
-import com.bieniek.revision.service.serviceimplementation.UserServiceImplementation;
-import com.bieniek.revision.utility.HibernateUtility;
 
 public class HibernateTest 
-{
-	private static UserService service = new UserServiceImplementation();
-	
+{		
 	public static void main(String[] args)
 	{
-		User user = service.findUser(new Long(2));
-		UserInfo userInfo = user.getUserInfo();
-		userInfo.setPhoneNumber("111222888");
+		ApplicationContext context = new ClassPathXmlApplicationContext("springbean.xml");
+		UserService userService = (UserService) context.getBean("userServiceImplementation"); 
 		
-		service.updateUser(user);
-		HibernateUtility.getSessionFactory().close();
+		User user1 = userService.findUser(new Long(1));
+		UserInfo info = user1.getUserInfo();
+		info.setPhoneNumber("+48 991 222 777");
+		userService.updateUser(user1);
 		
 	}
 }
